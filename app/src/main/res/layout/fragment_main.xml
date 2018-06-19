@@ -11,9 +11,16 @@
         android:id="@+id/temperature_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/round_button_selector"
+        android:fontFamily="@font/unica_one"
+        android:gravity="center"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
         android:text="0º"
-        android:textAppearance="@android:style/TextAppearance.Material.Title"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.ActionBar.Subtitle"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textSize="72sp"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,16 +33,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
+        android:focusable="false"
+
         android:inputType="numberDecimal"
         android:text="0"
-        android:focusable="false"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="@+id/textView2" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/textView2"
@@ -44,9 +51,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="@string/limit_temperature"
-        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
-        app:layout_constraintEnd_toStartOf="@+id/temperature_limit_edit"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:textAppearance="@android:style/TextAppearance.Material.Small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/temperature_label" />
 
@@ -56,9 +61,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:text="Temperatura"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -69,25 +75,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:max="255"
         android:progress="0"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="Regulador de Luz"
-        android:textAppearance="@android:style/TextAppearance.Material.Subhead"
-        app:layout_constraintEnd_toStartOf="@+id/light_regulator"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:textAppearance="@android:style/TextAppearance.Material.Small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/temperature_limit_edit" />
 
@@ -102,6 +105,6 @@
         android:textStyle="bold"
         android:typeface="monospace"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/light_regulator" />
 
 </android.support.constraint.ConstraintLayout>
