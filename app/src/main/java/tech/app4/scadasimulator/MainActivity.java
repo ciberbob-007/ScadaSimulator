@@ -1,9 +1,11 @@
 package tech.app4.scadasimulator;
 
+import android.content.DialogInterface;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -29,6 +31,7 @@ import android.content.res.Resources.Theme;
 
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -205,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     tech.app4.scadasimulator.model.Environment obj = dataSnapshot.getValue(tech.app4.scadasimulator.model.Environment.class);
-                    temperatureView.setText(obj.Temperatura.toString());
+                    temperatureView.setText(obj.Temperatura.toString() + "º");
                     temperatureLimit.setText(obj.TemperaturaLimite.toString());
                     temperatureLimit.setSelection(temperatureLimit.getText().length());
                     lightRegulator.setProgress(obj.Luz.intValue());
@@ -219,20 +222,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            temperatureLimit.addTextChangedListener(new TextWatcher() {
+            temperatureLimit.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    dbRef.child("TemperaturaLimite").setValue(Double.parseDouble(s.toString()));
+                public void onClick(View v) {
+                    showChangeLangDialog(temperatureLimit.getText().toString());
                 }
             });
 
@@ -262,5 +255,36 @@ public class MainActivity extends AppCompatActivity {
 
             return rootView;
         }
+
+        public void showChangeLangDialog(String currentValue) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = this.getLayoutInflater();
+            final View dialogView = inflater.inflate(R.layout.custom_layout, null);
+            dialogBuilder.setView(dialogView);
+
+            final EditText temperatureLimitChanger = (EditText) dialogView.findViewById(R.id.temperature_editText);
+            temperatureLimitChanger.setText(currentValue);
+            temperatureLimitChanger.setSelection(temperatureLimitChanger.getText().length());
+
+            dialogBuilder.setTitle("Temperatura Limite");
+            dialogBuilder.setMessage("Introduzca el nuevo limite: ");
+            dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String value = temperatureLimitChanger.getText().toString();
+                    if(value.length()>0)
+                        dbRef.child("TemperaturaLimite").setValue(Double.parseDouble(value));
+                    else
+                        Toast.makeText(getActivity(),"No se permiten valores vacios.", Toast.LENGTH_LONG).show();
+                }
+            });
+            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //pass
+                }
+            });
+            AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
+
     }
 }
