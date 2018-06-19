@@ -245,12 +245,44 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            blowOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            blowOnOff.setOnClickListener(new View.OnClickListener() {
+
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    dbRef.child("Ventilador").setValue( isChecked ? (long)150 : (long)0 );
+                public void onClick(View v) {
+                    final Switch btn = (Switch) v;
+                    final boolean switchChecked = btn.isChecked();
+
+                    if (btn.isChecked()) {
+                        btn.setChecked(false);
+                    } else {
+                        btn.setChecked(true);
+                    }
+
+                    String message = "Esta seguro de apagar el Ventilador?";
+                    if (!btn.isChecked()) {
+                        message = "Esta seguro de encender el Ventilador?";
+                    }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()); // Change "this" to `getActivity()` if you're using this on a fragment
+                    builder.setTitle("Ventilador");
+                    builder.setMessage(message)
+                            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    /*if (switchChecked) {
+                                        btn.setChecked(true);
+                                    } else {
+                                        btn.setChecked(false);
+                                    }*/
+
+                                    dbRef.child("Ventilador").setValue( switchChecked ? (long)150 : (long)0 );
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
                 }
             });
+
 
             return rootView;
         }
@@ -267,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
 
             dialogBuilder.setTitle("Temperatura Limite");
             dialogBuilder.setMessage("Introduzca el nuevo limite: ");
-            dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            dialogBuilder.setPositiveButton("Cambiar", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     String value = temperatureLimitChanger.getText().toString();
                     if(value.length()>0)
@@ -276,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getActivity(),"No se permiten valores vacios.", Toast.LENGTH_LONG).show();
                 }
             });
-            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     //pass
                 }
