@@ -1,7 +1,6 @@
 package tech.app4.scadasimulator;
 
 import android.content.DialogInterface;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,8 +10,6 @@ import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -171,7 +168,9 @@ public class MainActivity extends AppCompatActivity {
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef ;
+        DatabaseReference dbRef;
+
+        public String mEnvironmentName = "Habitacion";
 
 
         public PlaceholderFragment() {
@@ -184,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         public static PlaceholderFragment newInstance(int sectionNumber, String environmentName) {
             PlaceholderFragment fragment = new PlaceholderFragment();
 
-            fragment.dbRef = fragment.database.getReference(environmentName);
+            fragment.mEnvironmentName = environmentName;
 
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -202,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             final SeekBar lightRegulator = (SeekBar) rootView.findViewById(R.id.light_regulator);
             final Switch blowOnOff = (Switch) rootView.findViewById(R.id.blowhole_on_off);
 
-            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            dbRef = database.getReference(mEnvironmentName);
 
             dbRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -225,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
             temperatureLimit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showChangeLangDialog(temperatureLimit.getText().toString());
+                    showChangeTemperatureLimitDialog(temperatureLimit.getText().toString());
                 }
             });
 
@@ -256,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
             return rootView;
         }
 
-        public void showChangeLangDialog(String currentValue) {
+        public void showChangeTemperatureLimitDialog(String currentValue) {
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = this.getLayoutInflater();
             final View dialogView = inflater.inflate(R.layout.custom_layout, null);
